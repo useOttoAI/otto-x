@@ -6,13 +6,20 @@ export const proxyRouter = Router();
 
 /**
  * Proxy to existing Otto AI backend services.
- * Otto X handles x402 payment on X Layer; backends are called with
- * X-Internal-API-Key to skip their own payment verification.
+ * Otto X handles x402 payment on X Layer; backends are called with the internal
+ * API-key header (X-Internal-API-Key) to skip their own payment verification.
+ *
+ * Exported so the recipe engine (src/lib/recipe-engine.ts) can fan a composed
+ * recipe's legs out to the same backends through one code path. An optional
+ * `timeoutMs` aborts a slow leg so a recipe never hangs past the x402 payment
+ * window (a timed-out core leg refuses the recipe, unpaid, rather than charging
+ * for a stall).
  */
-async function proxyToBackend(
+export async function proxyToBackend(
   backendUrl: string,
   path: string,
   queryParams?: Record<string, string>,
+  timeoutMs?: number,
 ): Promise<{ status: number; data: unknown }> {
   const url = new URL(path, backendUrl);
   if (queryParams) {
@@ -21,15 +28,23 @@ async function proxyToBackend(
     }
   }
 
-  const response = await fetch(url.toString(), {
-    headers: {
-      'X-Internal-API-Key': env.INTERNAL_API_KEY,
-      Accept: 'application/json',
-    },
-  });
+  const controller = new AbortController();
+  const timer =
+    timeoutMs && timeoutMs > 0 ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  try {
+    const response = await fetch(url.toString(), {
+      headers: {
+        'X-Internal-API-Key': env.INTERNAL_API_KEY,
+        Accept: 'application/json',
+      },
+      signal: controller.signal,
+    });
 
-  const data = await response.json();
-  return { status: response.status, data };
+    const data = await response.json();
+    return { status: response.status, data };
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 
 // --- Market Intelligence (Market Alpha Agent) ---

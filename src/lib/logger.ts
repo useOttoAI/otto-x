@@ -1,4 +1,4 @@
-const SERVICE = 'tea-xlayer';
+const SERVICE = 'otto-x';
 
 type LogLevel = 'info' | 'warn' | 'error';
 
