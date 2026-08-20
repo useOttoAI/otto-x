@@ -4,7 +4,7 @@
  * Backed by the curated X Layer token set (src/lib/tokens.ts). This is the
  * fallback resolver the recipe engine uses AFTER a direct curated-symbol match
  * misses; it lets a buyer's ticker map to an on-chain contract on chain 196.
- * A miss returns an empty array — the caller degrades and never fabricates.
+ * A miss returns an empty array — the caller treats it as unavailable and never fabricates.
  */
 import { CURATED_TOKENS } from './tokens.js';
 

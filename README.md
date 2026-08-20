@@ -117,7 +117,7 @@ Client (AI agent or developer)
    (X Layer)      (intelligence)     artifact
 ```
 
-The Recipes engine (`src/lib/recipe-engine.ts`) resolves each leg id to its fetcher — a proxied intelligence read or a native OKX-DEX call — runs them, and merges the results into one response, degrading honestly when a best-effort leg is empty.
+The Recipes engine (`src/lib/recipe-engine.ts`) resolves each leg id to its fetcher — a proxied intelligence read or a native OKX-DEX call — runs them, and merges the results into one response, naming any best-effort leg that is unavailable rather than inventing a value for it.
 
 ---
 
