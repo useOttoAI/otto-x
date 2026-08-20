@@ -4,7 +4,7 @@
 
 Otto X is a pay-per-call DeFi API on X Layer, powered by the x402 protocol. AI agents and developers pay a micro-fee per request — no API keys, no subscriptions, no sign-up. The payment authorizes the call.
 
-**40+ paid endpoints** span market intelligence, token safety, derivatives, DeFi yield, on-chain execution, and **Recipes** — composed multi-endpoint workflows that return a whole answer for **one** call.
+**40+ paid endpoints** span market intelligence, token safety, derivatives, DeFi yield, on-chain execution, and **Recipes** — which chain multiple Otto intelligence endpoints into one call and one x402 payment.
 
 **Live:** [xlayer.ottoai.services](https://xlayer.ottoai.services)
 **Recipes:** [xlayer.ottoai.services/recipes](https://xlayer.ottoai.services/recipes)
@@ -17,7 +17,7 @@ Otto X is a pay-per-call DeFi API on X Layer, powered by the x402 protocol. AI a
 
 OKX's own x402 docs frame the hard problem as *"agent tasks that chain many paid endpoints"* — a job that otherwise means discovering, calling, and orchestrating several endpoints client-side, then stitching the results together.
 
-**Recipes collapse that orchestration.** A whole multi-endpoint job is composed **server-side** into a single paid route that fans out to several upstream legs and returns **one** artifact for **one** x402 call — the caller makes one request instead of wiring up many. Each leg is either **core** (load-bearing) or best-effort. If a recipe can't assemble its **core** result, it returns an error and the payment never settles; best-effort legs that can't resolve are **named** in the response as unavailable rather than fabricated.
+**Recipes collapse that orchestration.** A recipe chains multiple Otto intelligence endpoints into one call and one x402 payment: it runs several upstream legs **server-side** and returns one result — the caller makes one request instead of wiring up many. Each leg is either **core** (load-bearing) or best-effort. If a recipe can't assemble its **core** result, it returns an error and the payment never settles; best-effort legs that can't resolve are **named** in the response as unavailable rather than fabricated.
 
 | Recipe | Price | What one call answers |
 |--------|-------|-----------------------|
